@@ -50,6 +50,9 @@ Zie deze documentatie voor de how-to: https://docs.microsoft.com/en-us/aspnet/co
 1. Pas je endpoint aan zodat het aangemaakte object wordt teruggegeven en je een bijbehorende statuscode krijgt te zien.
 <filmpje>
 
+### Verdieping documentatie
+Voeg de xml commentaren toe uit je code aan de documentatie: https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-6.0&tabs=visual-studio#xml-comments
+
 ### Verdieping API aanroepen
 We hebben de API nu aangeroepen met de Swagger UI. In de praktijk zal een API aangeroepen worden door een ander systeem, bijvoorbeeld een frontend (web, mobile) of een andere applicatie.
 Probeer de applicatie Postman eens om de API aan te roepen: 
