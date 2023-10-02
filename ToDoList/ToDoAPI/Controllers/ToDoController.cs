@@ -16,11 +16,11 @@ namespace ToDoAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDoTask))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType(typeof(ToDoTask))]
-        public IEnumerable<ToDoTask> Get()
+        [ProducesDefaultResponseType(typeof(IEnumerable<ToDoTask>))]
+        public async Task<IActionResult> Get()
         {
-            return ToDoTask.ReadAll();
+            var items = ToDoTask.ReadAll();
+            return Ok(items);
         }
 
         // GET api/<ToDoController>/5
@@ -30,9 +30,21 @@ namespace ToDoAPI.Controllers
         /// <param name="id">Het id van het item</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public string Get(int id)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            if (id <= 0)
+            {
+                return BadRequest("Invalid ID");
+            }
+            var item = ToDoTask.Read(id);
+            if (item == null)
+            {
+                return NotFound($"Id {id} not found");
+            }
+            return Ok(item);
         }
 
         // POST api/<ToDoController>
