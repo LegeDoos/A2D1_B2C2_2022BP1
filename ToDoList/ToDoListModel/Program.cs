@@ -22,7 +22,7 @@ if (bestaandeTask != null)
     // update een taak
     Console.WriteLine();
     Console.WriteLine("Assign Rob aan de bierdrinken taak");
-    bestaandeTask.AssignPerson("Rob");
+    _ = bestaandeTask.AssignPerson("Rob");
     Console.WriteLine($"Id: {bestaandeTask.Id.ToString().PadLeft(5)}, Description: {bestaandeTask.Description.PadRight(30)}, Assigned:{bestaandeTask.AssignedName.PadRight(10)}, Created: {bestaandeTask.DateTimeCreated}, Finished: {bestaandeTask.DateTimeFinished}");
 
 }
@@ -32,7 +32,7 @@ if (bestaandeTask != null)
 Console.WriteLine();
 Console.WriteLine("We maken een nieuwe taak");
 ToDoTask nieuweTaak = new("Ramen lappen");
-nieuweTaak.Create();
+_ = nieuweTaak.Create();
 
 // ophalen alle taken
 Console.WriteLine();
@@ -46,8 +46,8 @@ foreach (var task in ToDoTask.ReadAll().Result)
 Console.WriteLine();
 Console.WriteLine("Verwjder de laatste taak");
 ToDoTask deleteTaak = ToDoTask.ReadAll().Result.Last();
-deleteTaak.FinishTask(); // alleen afgeronde taken mogen verwijderd
-deleteTaak.Delete();
+_ = deleteTaak.FinishTask(); // alleen afgeronde taken mogen verwijderd
+_ = deleteTaak.Delete();
 Console.WriteLine("Alle taken (zie de laatste taak weg):");
 foreach (var task in ToDoTask.ReadAll().Result)
 {

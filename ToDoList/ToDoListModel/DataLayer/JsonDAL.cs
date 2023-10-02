@@ -31,7 +31,7 @@ namespace ToDoListModel.DataLayer
             if (tasks.Count == 0)
             {
                 // create dummydata
-                this.CreateDummyData();
+                _ = this.CreateDummyData();
             }
         }
 
@@ -70,13 +70,13 @@ namespace ToDoListModel.DataLayer
         /// <summary>
         /// Create dummy data
         /// </summary>
-        private void CreateDummyData()
+        private async Task CreateDummyData()
         {
-            CreateToDoTask(new ToDoTask("Boodschappen doen"));
-            CreateToDoTask(new ToDoTask("Terras vegen"));
-            CreateToDoTask(new ToDoTask("Vaatwasser uitruimen"));
-            CreateToDoTask(new ToDoTask("Hond uitlaten"));
-            CreateToDoTask(new ToDoTask("Bier drinken"));            
+            await CreateToDoTask(new ToDoTask("Boodschappen doen"));
+            await CreateToDoTask(new ToDoTask("Terras vegen"));
+            await CreateToDoTask(new ToDoTask("Vaatwasser uitruimen"));
+            await CreateToDoTask(new ToDoTask("Hond uitlaten"));
+            await CreateToDoTask(new ToDoTask("Bier drinken"));            
         }
 
         #region Implemented interface methods (for comments see interface)

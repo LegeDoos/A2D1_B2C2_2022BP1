@@ -20,7 +20,7 @@ namespace ToDoAPI.Controllers
         [ProducesDefaultResponseType(typeof(IEnumerable<ToDoTask>))]
         public async Task<IActionResult> GetAll()
         {
-            var items = ToDoTask.ReadAll();
+            var items = await ToDoTask.ReadAll();
             return Ok(items);
         }
 
@@ -66,10 +66,10 @@ namespace ToDoAPI.Controllers
             }
 
             // add the task
-            ToDoTask newTask = new ToDoTask(toDoTaskViewModel.Description) {                 
+            ToDoTask newTask = new(toDoTaskViewModel.Description) {                 
                 AssignedName = toDoTaskViewModel.AssignedName };
             
-            newTask.Create();
+            await newTask.Create();
 
             // give the correct response
             return CreatedAtRoute(
@@ -94,14 +94,14 @@ namespace ToDoAPI.Controllers
             {
                 return BadRequest();
             }
-            var task = ToDoTask.Read(id);
+            var task = await ToDoTask.Read(id);
             if (task == null)
             {
                 return NotFound();
             }
             else
             {
-                if (task.AssignPerson(personName))
+                if (await task.AssignPerson(personName))
                 {
                     return NoContent();
                 }
@@ -121,14 +121,14 @@ namespace ToDoAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var task = ToDoTask.Read(id);
+            var task = await ToDoTask.Read(id);
             if (task == null)
             {
                 return NotFound();
             }
             else
             {
-                task.Delete();
+                await task.Delete();
                 return Ok();
             }
         }
