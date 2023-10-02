@@ -9,7 +9,7 @@ Console.WriteLine();
 Console.WriteLine("Alle taken:");
 foreach (var task in ToDoTask.ReadAll().Result)
 {
-    Console.WriteLine($"Id: {task.Id.ToString().PadLeft(5)}, Description: {task.Description.PadRight(30)}, Assigned:{task.AssignedName.PadRight(10)}, Created: {task.DateTimeCreated}, Finished: {task.DateTimeFinished}");
+    Console.WriteLine($"Id: {task.Id.ToString().PadLeft(5)}, Description: {task.Description.PadRight(30)}, Assigned:{task.AssignedName?.PadRight(10)}, Created: {task.DateTimeCreated}, Finished: {task.DateTimeFinished}");
 }
 
 // ophalen specifieke taak
@@ -18,15 +18,14 @@ Console.WriteLine("Ophalen alleen taak 5");
 ToDoTask? bestaandeTask = ToDoTask.Read(5).Result;
 if (bestaandeTask != null)
 {
-    Console.WriteLine($"Id: {bestaandeTask.Id.ToString().PadLeft(5)}, Description: {bestaandeTask.Description.PadRight(30)}, Assigned:{bestaandeTask.AssignedName.PadRight(10)}, Created: {bestaandeTask.DateTimeCreated}, Finished: {bestaandeTask.DateTimeFinished}");
+    Console.WriteLine($"Id: {bestaandeTask.Id.ToString().PadLeft(5)}, Description: {bestaandeTask.Description.PadRight(30)}, Assigned:{bestaandeTask.AssignedName?.PadRight(10)}, Created: {bestaandeTask.DateTimeCreated}, Finished: {bestaandeTask.DateTimeFinished}");
     // update een taak
     Console.WriteLine();
     Console.WriteLine("Assign Rob aan de bierdrinken taak");
     _ = bestaandeTask.AssignPerson("Rob");
-    Console.WriteLine($"Id: {bestaandeTask.Id.ToString().PadLeft(5)}, Description: {bestaandeTask.Description.PadRight(30)}, Assigned:{bestaandeTask.AssignedName.PadRight(10)}, Created: {bestaandeTask.DateTimeCreated}, Finished: {bestaandeTask.DateTimeFinished}");
+    Console.WriteLine($"Id: {bestaandeTask.Id.ToString().PadLeft(5)}, Description: {bestaandeTask.Description.PadRight(30)}, Assigned:{bestaandeTask.AssignedName?.PadRight(10)}, Created: {bestaandeTask.DateTimeCreated}, Finished: {bestaandeTask.DateTimeFinished}");
 
 }
-
 
 // maak een taak
 Console.WriteLine();
@@ -39,7 +38,7 @@ Console.WriteLine();
 Console.WriteLine("Alle taken (zie de nieuwe taak toegevoegd:");
 foreach (var task in ToDoTask.ReadAll().Result)
 {
-    Console.WriteLine($"Id: {task.Id.ToString().PadLeft(5)}, Description: {task.Description.PadRight(30)}, Assigned:{task.AssignedName.PadRight(10)}, Created: {task.DateTimeCreated}, Finished: {task.DateTimeFinished}");
+    Console.WriteLine($"Id: {task.Id.ToString().PadLeft(5)}, Description: {task.Description.PadRight(30)}, Assigned:{task.AssignedName?.PadRight(10)}, Created: {task.DateTimeCreated}, Finished: {task.DateTimeFinished}");
 }
 
 // verwijderen de laatste taak
@@ -51,6 +50,6 @@ _ = deleteTaak.Delete();
 Console.WriteLine("Alle taken (zie de laatste taak weg):");
 foreach (var task in ToDoTask.ReadAll().Result)
 {
-    Console.WriteLine($"Id: {task.Id.ToString().PadLeft(5)}, Description: {task.Description.PadRight(30)}, Assigned:{task.AssignedName.PadRight(10)}, Created: {task.DateTimeCreated}, Finished: {task.DateTimeFinished}");
+    Console.WriteLine($"Id: {task.Id.ToString().PadLeft(5)}, Description: {task.Description.PadRight(30)}, Assigned:{task.AssignedName?.PadRight(10)}, Created: {task.DateTimeCreated}, Finished: {task.DateTimeFinished}");
 }
 
