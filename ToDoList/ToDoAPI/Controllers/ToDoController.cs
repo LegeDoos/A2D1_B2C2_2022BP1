@@ -11,13 +11,13 @@ namespace ToDoAPI.Controllers
     {
         // GET: api/<ToDoController>
         /// <summary>
-        /// Haal alle todo items op!!!
+        /// Haal alle todo items op
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Lijst met alle ToDo items</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ToDoTask))]
         [ProducesDefaultResponseType(typeof(IEnumerable<ToDoTask>))]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             var items = ToDoTask.ReadAll();
             return Ok(items);
@@ -29,11 +29,11 @@ namespace ToDoAPI.Controllers
         /// </summary>
         /// <param name="id">Het id van het item</param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = nameof(GetTask))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetTask(int id)
         {
             if (id <= 0)
             {
@@ -51,10 +51,26 @@ namespace ToDoAPI.Controllers
         /// <summary>
         /// Maak een nieuw ToDo item aan
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="toDoTask">De taak die je wilt aanmaken</param>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ToDoTask))]
+        public async Task<IActionResult> Post([FromBody] ToDoTask toDoTask)
         {
+            // can only add when no id is given
+            if (toDoTask == null || toDoTask.Id != 0)
+            {
+                return BadRequest();
+            }
+
+            // add the task
+            toDoTask.Create();
+
+            // give the correct response
+            return CreatedAtRoute(
+                routeName: nameof(GetTask),
+                routeValues: new { id = toDoTask.Id },
+                value: toDoTask);
         }
 
         // PUT api/<ToDoController>/5
