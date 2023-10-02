@@ -113,9 +113,24 @@ namespace ToDoAPI.Controllers
         }
 
         // DELETE api/<ToDoController>/5
+        /// <summary>
+        /// Delete the task
+        /// </summary>
+        /// <param name="id">The id to delete</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var task = ToDoTask.Read(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                task.Delete();
+                return Ok();
+            }
         }
     }
 }
