@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 using ToDoAPI.ViewModels;
 using ToDoListModel.Models;
 
@@ -119,6 +120,10 @@ namespace ToDoAPI.Controllers
         /// <param name="id">The id to delete</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
         public async Task<IActionResult> Delete(int id)
         {
             var task = await ToDoTask.Read(id);
@@ -128,8 +133,15 @@ namespace ToDoAPI.Controllers
             }
             else
             {
-                await task.Delete();
-                return Ok();
+                try
+                {
+                    await task.Delete();
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }                
             }
         }
     }
