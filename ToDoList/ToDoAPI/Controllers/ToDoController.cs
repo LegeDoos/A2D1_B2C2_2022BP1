@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ToDoAPI.ViewModels;
 using ToDoListModel.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -51,26 +52,30 @@ namespace ToDoAPI.Controllers
         /// <summary>
         /// Maak een nieuw ToDo item aan
         /// </summary>
-        /// <param name="toDoTask">De taak die je wilt aanmaken</param>
+        /// <param name="toDoTaskViewModel">De taak die je wilt aanmaken</param>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ToDoTask))]
-        public async Task<IActionResult> Post([FromBody] ToDoTask toDoTask)
+        public async Task<IActionResult> Post([FromBody] ToDoTaskCreateViewModel toDoTaskViewModel)
         {
             // can only add when no id is given
-            if (toDoTask == null || toDoTask.Id != 0)
+            if (toDoTaskViewModel == null 
+                || string.IsNullOrEmpty(toDoTaskViewModel.Description))
             {
                 return BadRequest();
             }
 
             // add the task
-            toDoTask.Create();
+            ToDoTask newTask = new ToDoTask(toDoTaskViewModel.Description) {                 
+                AssignedName = toDoTaskViewModel.AssignedName };
+            
+            newTask.Create();
 
             // give the correct response
             return CreatedAtRoute(
                 routeName: nameof(GetTask),
-                routeValues: new { id = toDoTask.Id },
-                value: toDoTask);
+                routeValues: new { id = newTask.Id },
+                value: newTask);
         }
 
         // PUT api/<ToDoController>/5
