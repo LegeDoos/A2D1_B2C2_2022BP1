@@ -40,7 +40,7 @@ namespace ToDoAPI.Controllers
             {
                 return BadRequest("Invalid ID");
             }
-            var item = ToDoTask.Read(id);
+            var item = await ToDoTask.Read(id);
             if (item == null)
             {
                 return NotFound($"Id {id} not found");
