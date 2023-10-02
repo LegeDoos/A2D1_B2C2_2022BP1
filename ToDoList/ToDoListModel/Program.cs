@@ -7,7 +7,7 @@ Console.WriteLine("In dit programma worden alle CRUD operaties uitgevoerd");
 Console.WriteLine();
 // ophalen alle taken
 Console.WriteLine("Alle taken:");
-foreach (var task in ToDoTask.ReadAll())
+foreach (var task in ToDoTask.ReadAll().Result)
 {
     Console.WriteLine($"Id: {task.Id.ToString().PadLeft(5)}, Description: {task.Description.PadRight(30)}, Assigned:{task.AssignedName.PadRight(10)}, Created: {task.DateTimeCreated}, Finished: {task.DateTimeFinished}");
 }
@@ -15,7 +15,7 @@ foreach (var task in ToDoTask.ReadAll())
 // ophalen specifieke taak
 Console.WriteLine();
 Console.WriteLine("Ophalen alleen taak 5");
-ToDoTask? bestaandeTask = ToDoTask.Read(5);
+ToDoTask? bestaandeTask = ToDoTask.Read(5).Result;
 if (bestaandeTask != null)
 {
     Console.WriteLine($"Id: {bestaandeTask.Id.ToString().PadLeft(5)}, Description: {bestaandeTask.Description.PadRight(30)}, Assigned:{bestaandeTask.AssignedName.PadRight(10)}, Created: {bestaandeTask.DateTimeCreated}, Finished: {bestaandeTask.DateTimeFinished}");
@@ -37,7 +37,7 @@ nieuweTaak.Create();
 // ophalen alle taken
 Console.WriteLine();
 Console.WriteLine("Alle taken (zie de nieuwe taak toegevoegd:");
-foreach (var task in ToDoTask.ReadAll())
+foreach (var task in ToDoTask.ReadAll().Result)
 {
     Console.WriteLine($"Id: {task.Id.ToString().PadLeft(5)}, Description: {task.Description.PadRight(30)}, Assigned:{task.AssignedName.PadRight(10)}, Created: {task.DateTimeCreated}, Finished: {task.DateTimeFinished}");
 }
@@ -45,11 +45,11 @@ foreach (var task in ToDoTask.ReadAll())
 // verwijderen de laatste taak
 Console.WriteLine();
 Console.WriteLine("Verwjder de laatste taak");
-ToDoTask deleteTaak = ToDoTask.ReadAll().Last();
+ToDoTask deleteTaak = ToDoTask.ReadAll().Result.Last();
 deleteTaak.FinishTask(); // alleen afgeronde taken mogen verwijderd
 deleteTaak.Delete();
 Console.WriteLine("Alle taken (zie de laatste taak weg):");
-foreach (var task in ToDoTask.ReadAll())
+foreach (var task in ToDoTask.ReadAll().Result)
 {
     Console.WriteLine($"Id: {task.Id.ToString().PadLeft(5)}, Description: {task.Description.PadRight(30)}, Assigned:{task.AssignedName.PadRight(10)}, Created: {task.DateTimeCreated}, Finished: {task.DateTimeFinished}");
 }

@@ -57,12 +57,12 @@ namespace ToDoListModel.Models
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool AssignPerson(string name)
+        public async Task<bool> AssignPerson(string name)
         {
             if (DateTimeFinished == null)
             {
                 AssignedName = name;
-                this.Update();
+                await this.Update();
                 return true;
             }
             else
@@ -74,10 +74,10 @@ namespace ToDoListModel.Models
         /// <summary>
         /// Finish the task, aka set an end datetime
         /// </summary>
-        public void FinishTask()
+        public async Task FinishTask()
         {
             DateTimeFinished = DateTime.Now;
-            this.Update();
+            await this.Update();
         }
 
         #endregion
@@ -87,7 +87,7 @@ namespace ToDoListModel.Models
         /// <summary>
         /// Persist this task in datalayer
         /// </summary>
-        public void Create()
+        public async Task Create()
         {
             // controles vinden hier plaats
             if (Id != 0)
@@ -96,7 +96,7 @@ namespace ToDoListModel.Models
             }
 
             IDataAccessLayer dal = DALSingleton.Instance; 
-            var result = dal.CreateToDoTask(this);
+            var result = await dal.CreateToDoTask(this);
             this.Id = result.Id;
         }
 
@@ -105,20 +105,20 @@ namespace ToDoListModel.Models
         /// </summary>
         /// <param name="id">The id of the specific task</param>
         /// <returns>The specific task</returns>
-        public static ToDoTask? Read(int id)
+        public static async Task<ToDoTask?> Read(int id)
         {
             IDataAccessLayer dal = DALSingleton.Instance;
-            return dal.ReadToDoTask(id);
+            return await dal.ReadToDoTask(id);
         }
 
         /// <summary>
         /// Read all tasks from the datalayer
         /// </summary>
         /// <returns>List with all tasks</returns>
-        public static List<ToDoTask> ReadAll()
+        public static async Task<List<ToDoTask>> ReadAll()
         {
             IDataAccessLayer dal = DALSingleton.Instance;
-            return dal.ReadToDoTasks();
+            return await dal.ReadToDoTasks();
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace ToDoListModel.Models
         /// This method is private so it can only be called from this class by another method. You force the user to use the code you wrote to update a task!
         /// </summary>
         /// <returns>The updated task</returns>
-        private ToDoTask Update()
+        private async Task<ToDoTask> Update()
         {
             // controles vinden hier plaats
             if (Id == 0)
@@ -135,13 +135,13 @@ namespace ToDoListModel.Models
             }
 
             IDataAccessLayer dal = DALSingleton.Instance;
-            return dal.UpdateToDoTask(this);
+            return await dal.UpdateToDoTask(this);
         }
 
         /// <summary>
         /// Delete this task from the datalayer
         /// </summary>
-        public void Delete()
+        public async Task Delete()
         {
             // controles vinden hier plaats, bv voorwaarden of ik mag deleten
             if (this.DateTimeFinished == null)
@@ -150,7 +150,7 @@ namespace ToDoListModel.Models
             }
 
             IDataAccessLayer dal = DALSingleton.Instance;
-            dal.DeleteToDoTask(this);
+            await dal.DeleteToDoTask(this);
         }
 
         #endregion
