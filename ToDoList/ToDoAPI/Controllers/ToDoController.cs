@@ -79,9 +79,37 @@ namespace ToDoAPI.Controllers
         }
 
         // PUT api/<ToDoController>/5
+        /// <summary>
+        /// Assign a person to the task
+        /// </summary>
+        /// <param name="id">The task id</param>
+        /// <param name="personName">The name of the person</param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> AssignPersonToTask(int id, [FromBody] string personName)
         {
+            if (string.IsNullOrEmpty(personName))
+            {
+                return BadRequest();
+            }
+            var task = ToDoTask.Read(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                if (task.AssignPerson(personName))
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
         }
 
         // DELETE api/<ToDoController>/5
