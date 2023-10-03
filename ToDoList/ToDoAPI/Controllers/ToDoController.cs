@@ -84,14 +84,14 @@ namespace ToDoAPI.Controllers
         /// Assign a person to the task
         /// </summary>
         /// <param name="id">The task id</param>
-        /// <param name="personName">The name of the person</param>
-        [HttpPut("{id}")]
+        /// <param name="person">The name of the person</param>
+        [HttpPut("AssignPerson/{id}/{person}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> AssignPersonToTask(int id, [FromBody] string personName)
+        public async Task<IActionResult> AssignPersonToTask(int id, string person)
         {
-            if (string.IsNullOrEmpty(personName))
+            if (string.IsNullOrEmpty(person))
             {
                 return BadRequest();
             }
@@ -102,13 +102,44 @@ namespace ToDoAPI.Controllers
             }
             else
             {
-                if (await task.AssignPerson(personName))
+                if (await task.AssignPerson(person))
                 {
                     return NoContent();
                 }
                 else
                 {
                     return BadRequest();
+                }
+            }
+        }
+
+        // PUT api/<ToDoController>/5
+        /// <summary>
+        /// Assign a person to the task
+        /// </summary>
+        /// <param name="id">The task id</param>
+        /// <param name="person">The name of the person</param>
+        [HttpPut("FinishTask/{id}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> FinishTask(int id)
+        {
+            var task = await ToDoTask.Read(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                try
+                {
+                    await task.FinishTask();
+                    return NoContent();
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
                 }
             }
         }
