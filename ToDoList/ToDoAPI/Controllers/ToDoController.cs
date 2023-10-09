@@ -115,10 +115,9 @@ namespace ToDoAPI.Controllers
 
         // PUT api/<ToDoController>/5
         /// <summary>
-        /// Assign a person to the task
+        /// Finish the selected task
         /// </summary>
         /// <param name="id">The task id</param>
-        /// <param name="person">The name of the person</param>
         [HttpPut("FinishTask/{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
